@@ -20,26 +20,34 @@ export default function QuestionFilter() {
     });
   }, []);
 
-  //   If the user clicks the 'I Want All Categories' button, send request to the API for those quesitons
+//   API response comes with base64 encoding, so the js-base64 package will decode it
+  const decodeResults = (results) => {
+      const decoded = [];
+      results.forEach((object) => {
+        const questionObject = {
+          category: Base64.decode(object.category),
+          question: Base64.decode(object.question),
+          correct_answer: Base64.decode(object.correct_answer),
+          all_answers: [
+            Base64.decode(object.incorrect_answers[0]),
+            Base64.decode(object.incorrect_answers[1]),
+            Base64.decode(object.incorrect_answers[2]),
+            Base64.decode(object.correct_answer),
+          ],
+        };
+        decoded.push(questionObject);
+      });
+      setState({
+        ...state,
+        apiResults: decoded,
+      });
+  }
+
+  //   If the user clicks the 'I Want All Categories' button, send request to the API for those quesitons. Then calls the function decodeResults which sets the state apiResults to the decoded results
   const handleAllSubmit = (event) => {
     event.preventDefault();
-    const decoded = [];
     API.getQuestionsAnyCategory().then((response) => {
-      console.log(response.data.results);
-      response.data.results.forEach((object) => {
-        const questionObject = {
-            category: Base64.decode(object.category),
-            question: Base64.decode(object.question),
-            correct_answer: Base64.decode(object.correct_answer),
-            all_answers: [Base64.decode(object.incorrect_answers[0]), Base64.decode(object.incorrect_answers[1]), Base64.decode(object.incorrect_answers[2]), Base64.decode(object.correct_answer)]
-        }
-        decoded.push(questionObject);
-    });
-    console.log(decoded)
-    setState({
-        ...state,
-        apiResults: decoded
-    });
+        decodeResults(response.data.results);
     });
   };
 
@@ -52,48 +60,13 @@ export default function QuestionFilter() {
     });
   };
 
-  //   When a particular category is indicated, call the API and pass in the categoryId
+  //   When a particular category is indicated, call the API and pass in the categoryId.  Then the results are decoded and the state.apiResults is set.
   const handleCategorySubmit = (event) => {
     event.preventDefault();
-    const decoded = [];
     API.getQuestionsByCategory(state.categoryId).then((response) => {
-      console.log(response.data);
-      response.data.results.forEach((object) => {
-        const questionObject = {
-            category: Base64.decode(object.category),
-            question: Base64.decode(object.question),
-            correct_answer: Base64.decode(object.correct_answer),
-            all_answers: [Base64.decode(object.incorrect_answers[0]), Base64.decode(object.incorrect_answers[1]), Base64.decode(object.incorrect_answers[2]), Base64.decode(object.correct_answer)]
-        }
-        decoded.push(questionObject);
+        decodeResults(response.data.results);
     });
-    console.log(decoded)
-    setState({
-        ...state,
-        apiResults: decoded
-    });
-    });
-  
   };
-
-//   const decoded = [];
-//   const decodeApiResults = () => {
-//     state.apiResults.forEach((object) => {
-//         const questionObject = {
-//             category: Base64.decode(object.category),
-//             question: Base64.decode(object.question),
-//             correct_answer: Base64.decode(object.correct_answer),
-//             all_answers: [Base64.decode(object.incorrect_answers[0]), Base64.decode(object.incorrect_answers[1]), Base64.decode(object.incorrect_answers[2]), Base64.decode(object.correct_answer)]
-//         }
-//         decoded.push(questionObject);
-//     });
-//     console.log(decoded)
-//     setState({
-//         ...state,
-//         decodedResults: decoded
-//     });
-//   };
-  
 
   return (
     <div className="container">
