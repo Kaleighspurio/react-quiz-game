@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import ScoreBox from './ScoreBox';
 import API from '../utils/API';
+import QuestionDiv from './QuestionDiv';
+import { Base64 } from 'js-base64';
 
 export default function QuestionFilter() {
   // Lets have some state...
@@ -7,6 +10,7 @@ export default function QuestionFilter() {
     apiResults: [],
     categoryId: '9',
     allCategories: [],
+    score: '',
   });
 
   // when the component loads, get all possible trivia categories to use in the select dropdown
@@ -19,12 +23,23 @@ export default function QuestionFilter() {
   //   If the user clicks the 'I Want All Categories' button, send request to the API for those quesitons
   const handleAllSubmit = (event) => {
     event.preventDefault();
+    const decoded = [];
     API.getQuestionsAnyCategory().then((response) => {
-      console.log(response.data);
-      setState({
+      console.log(response.data.results);
+      response.data.results.forEach((object) => {
+        const questionObject = {
+            category: Base64.decode(object.category),
+            question: Base64.decode(object.question),
+            correct_answer: Base64.decode(object.correct_answer),
+            all_answers: [Base64.decode(object.incorrect_answers[0]), Base64.decode(object.incorrect_answers[1]), Base64.decode(object.incorrect_answers[2]), Base64.decode(object.correct_answer)]
+        }
+        decoded.push(questionObject);
+    });
+    console.log(decoded)
+    setState({
         ...state,
-        apiResults: response.data.results,
-      });
+        apiResults: decoded
+    });
     });
   };
 
@@ -33,71 +48,93 @@ export default function QuestionFilter() {
     event.preventDefault();
     setState({
       ...state,
-      category: event.target.value,
+      categoryId: event.target.value,
     });
   };
 
   //   When a particular category is indicated, call the API and pass in the categoryId
   const handleCategorySubmit = (event) => {
     event.preventDefault();
+    const decoded = [];
     API.getQuestionsByCategory(state.categoryId).then((response) => {
       console.log(response.data);
+      response.data.results.forEach((object) => {
+        const questionObject = {
+            category: Base64.decode(object.category),
+            question: Base64.decode(object.question),
+            correct_answer: Base64.decode(object.correct_answer),
+            all_answers: [Base64.decode(object.incorrect_answers[0]), Base64.decode(object.incorrect_answers[1]), Base64.decode(object.incorrect_answers[2]), Base64.decode(object.correct_answer)]
+        }
+        decoded.push(questionObject);
     });
+    console.log(decoded)
+    setState({
+        ...state,
+        apiResults: decoded
+    });
+    });
+  
   };
 
+//   const decoded = [];
+//   const decodeApiResults = () => {
+//     state.apiResults.forEach((object) => {
+//         const questionObject = {
+//             category: Base64.decode(object.category),
+//             question: Base64.decode(object.question),
+//             correct_answer: Base64.decode(object.correct_answer),
+//             all_answers: [Base64.decode(object.incorrect_answers[0]), Base64.decode(object.incorrect_answers[1]), Base64.decode(object.incorrect_answers[2]), Base64.decode(object.correct_answer)]
+//         }
+//         decoded.push(questionObject);
+//     });
+//     console.log(decoded)
+//     setState({
+//         ...state,
+//         decodedResults: decoded
+//     });
+//   };
+  
+
   return (
-    <form className="my-6">
-      <div className="is-grouped">
-        <p className="control">
-          <button
-            className="button is-warning"
-            type="submit"
-            onClick={handleAllSubmit}
-          >
-            I Want All Categories!
-          </button>
-        </p>
-        <h2 className="my-4 control">OR...</h2>
-        <div className="field is-grouped">
-          <div className="control is-expanded">
-            <div className="select is-fullwidth">
-              <select onChange={handleChange}>
-                {state.allCategories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+    <div className="container">
+      <ScoreBox />
+      <form className="my-6">
+        <div className="is-grouped">
           <p className="control">
             <button
-              className="button is-info"
+              className="button is-warning"
               type="submit"
-              onClick={handleCategorySubmit}
+              onClick={handleAllSubmit}
             >
-              Search
+              I Want All Categories!
             </button>
           </p>
+          <h2 className="my-4 control">OR...</h2>
+          <div className="field is-grouped">
+            <div className="control is-expanded">
+              <div className="select is-fullwidth">
+                <select onChange={handleChange}>
+                  {state.allCategories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <p className="control">
+              <button
+                className="button is-info"
+                type="submit"
+                onClick={handleCategorySubmit}
+              >
+                Search
+              </button>
+            </p>
+          </div>
         </div>
-
-        {/* <p className="select is-rounded control">
-          <select onChange={handleChange}>
-            {state.allCategories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-          <button
-            className="button is-info my-3 control"
-            type="submit"
-            onClick={handleCategorySubmit}
-          >
-            Submit
-          </button>
-        </p> */}
-      </div>
-    </form>
+      </form>
+      <QuestionDiv apiResults={state.apiResults} />
+    </div>
   );
 }
