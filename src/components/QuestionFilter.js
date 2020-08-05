@@ -24,19 +24,24 @@ export default function QuestionFilter() {
   const decodeResults = (results) => {
       const decoded = [];
       results.forEach((object) => {
+        const allOptions =  [
+            Base64.decode(object.incorrect_answers[0]),
+            Base64.decode(object.incorrect_answers[1]),
+            Base64.decode(object.incorrect_answers[2]),
+            Base64.decode(object.correct_answer)
+        ]
+        // lets put all 4 answer options in alphabetical order and we will display them in alphabetically order so that it is random...
+        allOptions.sort();
         const questionObject = {
           category: Base64.decode(object.category),
           question: Base64.decode(object.question),
           correct_answer: Base64.decode(object.correct_answer),
-          all_answers: [
-            Base64.decode(object.incorrect_answers[0]),
-            Base64.decode(object.incorrect_answers[1]),
-            Base64.decode(object.incorrect_answers[2]),
-            Base64.decode(object.correct_answer),
-          ],
+          all_answers: allOptions,
         };
+        // push the object we created with the api results into an array
         decoded.push(questionObject);
       });
+    //   set the state to the array we created with all of the results decoded.
       setState({
         ...state,
         apiResults: decoded,
