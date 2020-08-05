@@ -16,61 +16,87 @@ export default function QuestionFilter() {
     });
   }, []);
 
-//   If the user clicks the 'I Want All Categories' button, send request to the API for those quesitons
+  //   If the user clicks the 'I Want All Categories' button, send request to the API for those quesitons
   const handleAllSubmit = (event) => {
     event.preventDefault();
     API.getQuestionsAnyCategory().then((response) => {
-        console.log(response.data);
-        setState({
-            ...state,
-            apiResults: response.data.results
-        });
+      console.log(response.data);
+      setState({
+        ...state,
+        apiResults: response.data.results,
+      });
     });
   };
 
-//   When the select box is changed, set the state.categoryId to the id of the selected category
+  //   When the select box is changed, set the state.categoryId to the id of the selected category
   const handleChange = (event) => {
     event.preventDefault();
     setState({
-        ...state,
-        category: event.target.value
+      ...state,
+      category: event.target.value,
     });
-  }
+  };
 
+  //   When a particular category is indicated, call the API and pass in the categoryId
   const handleCategorySubmit = (event) => {
     event.preventDefault();
     API.getQuestionsByCategory(state.categoryId).then((response) => {
-        console.log(response.data);
-    })
+      console.log(response.data);
+    });
   };
 
   return (
-    <form>
-      <div>
-        <button
-          className="button is-warning"
-          type="submit"
-          onClick={handleAllSubmit}
-        >
-          I Want All Categories!
-        </button>
-      </div>
-      <h2 className='my-4'>OR</h2>
-      <div className="select is-rounded">
-        <select onChange={handleChange}>
-          {state.allCategories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-        <button
-          className="button is-info"
-          type="submit"
-          onClick={handleCategorySubmit}
-        >
-          Submit
-        </button>
+    <form className="my-6">
+      <div className="is-grouped">
+        <p className="control">
+          <button
+            className="button is-warning"
+            type="submit"
+            onClick={handleAllSubmit}
+          >
+            I Want All Categories!
+          </button>
+        </p>
+        <h2 className="my-4 control">OR...</h2>
+        <div className="field is-grouped">
+          <div className="control is-expanded">
+            <div className="select is-fullwidth">
+              <select onChange={handleChange}>
+                {state.allCategories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <p className="control">
+            <button
+              className="button is-info"
+              type="submit"
+              onClick={handleCategorySubmit}
+            >
+              Search
+            </button>
+          </p>
+        </div>
+
+        {/* <p className="select is-rounded control">
+          <select onChange={handleChange}>
+            {state.allCategories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          <button
+            className="button is-info my-3 control"
+            type="submit"
+            onClick={handleCategorySubmit}
+          >
+            Submit
+          </button>
+        </p> */}
       </div>
     </form>
   );
