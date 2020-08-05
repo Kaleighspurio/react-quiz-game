@@ -39,6 +39,9 @@ export default function QuestionFilter() {
 
   const handleCategorySubmit = (event) => {
     event.preventDefault();
+    API.getQuestionsByCategory(state.categoryId).then((response) => {
+        console.log(response.data);
+    })
   };
 
   return (
