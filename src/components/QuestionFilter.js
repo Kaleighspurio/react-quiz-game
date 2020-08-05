@@ -33,9 +33,10 @@ export default function QuestionFilter() {
           type="submit"
           onClick={handleAllSubmit}
         >
-          All Categories!
+          I Want All Categories!
         </button>
       </div>
+      <h2 className='my-4'>OR</h2>
       <div className="select is-rounded">
         <select>
           {state.allCategories.map((category) => (

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default {
     getQuestionsAnyCategory: function() {
-        return axios.get('https://opentdb.com/api.php?amount=10');
+        return axios.get('https://opentdb.com/api.php?amount=15');
     },
 
     getPossibleCategories: function() {
@@ -10,6 +10,6 @@ export default {
     },
 
     getQuestionsByCategory: function(categoryId) {
-        return axios.get(`https://opentdb.com/api.php?amount=10&category=${categoryId}`);
+        return axios.get(`https://opentdb.com/api.php?amount=15&category=${categoryId}`);
     }
 }
