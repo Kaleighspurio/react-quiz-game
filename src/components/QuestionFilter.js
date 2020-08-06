@@ -10,6 +10,8 @@ export default function QuestionFilter() {
     apiResults: [],
     categoryId: '9',
     allCategories: [],
+    correctAnswers: [],
+    usersAnswers: [],
     score: '',
   });
 
@@ -20,39 +22,40 @@ export default function QuestionFilter() {
     });
   }, []);
 
-//   API response comes with base64 encoding, so the js-base64 package will decode it
+  //   API response comes with base64 encoding, so the js-base64 package will decode it.  The grabCorrectAnswers function is also called to set the correctAnswers in the state.
   const decodeResults = (results) => {
-      const decoded = [];
-      results.forEach((object) => {
-        const allOptions =  [
-            Base64.decode(object.incorrect_answers[0]),
-            Base64.decode(object.incorrect_answers[1]),
-            Base64.decode(object.incorrect_answers[2]),
-            Base64.decode(object.correct_answer)
-        ]
-        // lets put all 4 answer options in alphabetical order and we will display them in alphabetically order so that it is random...
-        allOptions.sort();
-        const questionObject = {
-          category: Base64.decode(object.category),
-          question: Base64.decode(object.question),
-          correct_answer: Base64.decode(object.correct_answer),
-          all_answers: allOptions,
-        };
-        // push the object we created with the api results into an array
-        decoded.push(questionObject);
-      });
+    const decoded = [];
+    results.forEach((object) => {
+      const allOptions = [
+        Base64.decode(object.incorrect_answers[0]),
+        Base64.decode(object.incorrect_answers[1]),
+        Base64.decode(object.incorrect_answers[2]),
+        Base64.decode(object.correct_answer),
+      ];
+      // lets put all 4 answer options in alphabetical order and we will display them in alphabetically order so that it is random...
+      allOptions.sort();
+      const questionObject = {
+        category: Base64.decode(object.category),
+        question: Base64.decode(object.question),
+        correct_answer: Base64.decode(object.correct_answer),
+        all_answers: allOptions,
+      };
+      // push the object we created with the api results into an array
+      decoded.push(questionObject);
+    });
+    grabCorrectAnswers(decoded);
     //   set the state to the array we created with all of the results decoded.
-      setState({
-        ...state,
-        apiResults: decoded,
-      });
-  }
+    setState({
+      ...state,
+      apiResults: decoded,
+    });
+  };
 
   //   If the user clicks the 'I Want All Categories' button, send request to the API for those quesitons. Then calls the function decodeResults which sets the state apiResults to the decoded results
   const handleAllSubmit = (event) => {
     event.preventDefault();
     API.getQuestionsAnyCategory().then((response) => {
-        decodeResults(response.data.results);
+      decodeResults(response.data.results);
     });
   };
 
@@ -69,7 +72,19 @@ export default function QuestionFilter() {
   const handleCategorySubmit = (event) => {
     event.preventDefault();
     API.getQuestionsByCategory(state.categoryId).then((response) => {
-        decodeResults(response.data.results);
+      decodeResults(response.data.results);
+    });
+  };
+
+  const grabCorrectAnswers = (results) => {
+    const correctAnswers = [];
+    results.forEach((result) => {
+      correctAnswers.push(result.correct_answer);
+    });
+    console.log(correctAnswers, 'correct answers');
+    setState({
+      ...state,
+      correctAnswers: correctAnswers,
     });
   };
 
