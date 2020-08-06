@@ -6,12 +6,32 @@ import { Base64 } from 'js-base64';
 
 export default function QuestionFilter() {
   // Lets have some state...
+  //   * apiResults: Where the decoded results (trivia questions and answers) are stored
+  // * categoryId: Where the selected category is stored, if the user wants trivia of a certain category
+  //  * allCategories: all category options possible, used in the select dropdown
+  //  * correctAnswers: all of the correct answers to the current questions
+  //  * 1-15: stores all of the answers that the user selected
+  //  * score: stores the user's score after the quiz
   const [state, setState] = useState({
     apiResults: [],
     categoryId: '9',
     allCategories: [],
     correctAnswers: [],
-    usersAnswers: [],
+    1: '',
+    2: '',
+    3: '',
+    4: '',
+    5: '',
+    6: '',
+    7: '',
+    8: '',
+    9: '',
+    10: '',
+    11: '',
+    12: '',
+    13: '',
+    14: '',
+    15: '',
     score: '',
   });
 
@@ -88,6 +108,21 @@ export default function QuestionFilter() {
     });
   };
 
+  const handleRadioChange = (event) => {
+    event.preventDefault();
+    console.log('radio clicked');
+    const { name, value } = event.target;
+    setState({
+        ...state,
+        [name]: value
+    });
+  }
+
+  const handleQuizSubmit = (event) => {
+      event.preventDefault();
+
+  }
+
   return (
     <div className="container">
       <ScoreBox />
@@ -127,7 +162,7 @@ export default function QuestionFilter() {
           </div>
         </div>
       </form>
-      <QuestionDiv apiResults={state.apiResults} />
+      <QuestionDiv apiResults={state.apiResults} handleRadioChange={handleRadioChange} />
     </div>
   );
 }

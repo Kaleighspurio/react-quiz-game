@@ -8,8 +8,6 @@ export default function QuestionDiv(props) {
     //     usersAnswers: [],
     // })
 
-    
-
 
     // if there are questions, display the end of game button
     const displayButton = () => {
@@ -22,18 +20,25 @@ export default function QuestionDiv(props) {
         event.preventDefault();
     }
 
+    // these help give the questions and radios numbers
+    let i = 1;
+    let j = 1;
+    let k = 1;
+    let l = 1;
+    let m = 1;
+
   return (
     <div className="container">
       {props.apiResults.map((result) => (
-        <div key={result.question}>
+        <div key={result.question} name={result.question} onChange={props.handleRadioChange}>
           <p>Category: {result.category}</p>
-          <p>{result.question}</p>
+      <p>{i++}. {result.question}</p>
           <form>
             <div className="control my-3">
               <input
                 className="mx-1"
                 type="radio"
-                name="answer"
+                name={j++}
                 value={result.all_answers[0]}
               />
               {result.all_answers[0]}
@@ -41,7 +46,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name="answer"
+                name={k++}
                 value={result.all_answers[1]}
               />
               {result.all_answers[1]}
@@ -49,7 +54,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name="answer"
+                name={l++}
                 value={result.all_answers[2]}
               />
               {result.all_answers[2]}
@@ -57,7 +62,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name="answer"
+                name={m++}
                 value={result.all_answers[3]}
               />
               {result.all_answers[3]}
@@ -71,7 +76,7 @@ export default function QuestionDiv(props) {
 }
 
 //  TODO: Next steps- 
-// * add button to complete quiz
+
 // * add code to make sure all questions have been answered
 // * add function that will check answers
 // * Deal with calculating the score and displaying it
