@@ -17,21 +17,21 @@ export default function QuestionFilter() {
     categoryId: '9',
     allCategories: [],
     correctAnswers: [],
-    1: '',
-    2: '',
-    3: '',
-    4: '',
-    5: '',
-    6: '',
-    7: '',
-    8: '',
-    9: '',
-    10: '',
-    11: '',
-    12: '',
-    13: '',
-    14: '',
-    15: '',
+    question1: '',
+    question2: '',
+    question3: '',
+    question4: '',
+    question5: '',
+    question6: '',
+    question7: '',
+    question8: '',
+    question9: '',
+    question10: '',
+    question11: '',
+    question12: '',
+    question13: '',
+    question14: '',
+    question15: '',
     score: '',
   });
 
@@ -63,12 +63,8 @@ export default function QuestionFilter() {
       // push the object we created with the api results into an array
       decoded.push(questionObject);
     });
+    // this function will grab the correct answers and will set the state for the correctAnswers AND apiResults
     grabCorrectAnswers(decoded);
-    //   set the state to the array we created with all of the results decoded.
-    setState({
-      ...state,
-      apiResults: decoded,
-    });
   };
 
   //   If the user clicks the 'I Want All Categories' button, send request to the API for those quesitons. Then calls the function decodeResults which sets the state apiResults to the decoded results
@@ -96,18 +92,21 @@ export default function QuestionFilter() {
     });
   };
 
-  const grabCorrectAnswers = (results) => {
+  const grabCorrectAnswers = async (results) => {
     const correctAnswers = [];
-    results.forEach((result) => {
+    await results.forEach((result) => {
       correctAnswers.push(result.correct_answer);
     });
-    console.log(correctAnswers, 'correct answers');
-    setState({
+    await console.log(correctAnswers, 'correct answers');
+     setState({
       ...state,
+      apiResults: results,
       correctAnswers: correctAnswers,
     });
+    await console.log(state.correctAnswers, correctAnswers, 'correct answers');
   };
 
+//   when the radio buttons are changed, the state is set according to which question
   const handleRadioChange = (event) => {
     event.preventDefault();
     console.log('radio clicked');
@@ -120,7 +119,17 @@ export default function QuestionFilter() {
 
   const handleQuizSubmit = (event) => {
       event.preventDefault();
-
+// we need to compare the correct answers with the answers the user chose...
+    let number = 1;
+    // state.correctAnswers.forEach(answer => {
+    //     if (answer === state.1) {
+    //         console.log(`${answer} is correct!`);
+    //     } else {
+    //         console.log('nope, wrong')
+    //     }
+    //     number++;
+    //     console.log(state.[number]);
+    // })
   }
 
   return (
@@ -162,7 +171,7 @@ export default function QuestionFilter() {
           </div>
         </div>
       </form>
-      <QuestionDiv apiResults={state.apiResults} handleRadioChange={handleRadioChange} />
+      <QuestionDiv apiResults={state.apiResults} handleRadioChange={handleRadioChange} handleQuizSubmit={handleQuizSubmit} />
     </div>
   );
 }

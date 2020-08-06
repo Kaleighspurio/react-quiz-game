@@ -38,7 +38,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name={j++}
+                name={'question' + (j++)}
                 value={result.all_answers[0]}
               />
               {result.all_answers[0]}
@@ -46,7 +46,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name={k++}
+                name={'question' + (k++)}
                 value={result.all_answers[1]}
               />
               {result.all_answers[1]}
@@ -54,7 +54,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name={l++}
+                name={'question' + (l++)}
                 value={result.all_answers[2]}
               />
               {result.all_answers[2]}
@@ -62,7 +62,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name={m++}
+                name={'question' + (m++)}
                 value={result.all_answers[3]}
               />
               {result.all_answers[3]}
