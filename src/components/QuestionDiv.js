@@ -2,13 +2,6 @@ import React, { useState } from 'react';
 
 export default function QuestionDiv(props) {
 
-
-    // const [answers, setAnswers] = useState({
-    //     correctAnswers: correctAnswers,
-    //     usersAnswers: [],
-    // })
-
-
     // if there are questions, display the end of game button
     const displayButton = () => {
         if (props.apiResults.length > 1) {
@@ -16,10 +9,11 @@ export default function QuestionDiv(props) {
         }
     }
 
-    // const handleQuizSubmit = (event) => {
-    //     event.preventDefault();
-
-    // }
+    const displayAnswers = (n) => {
+        if (props.showAnswers) {
+        return <span className="has-text-weight-bold has-text-link" >Correct Answer: {props.correctAnswers[n-1]}</span>
+        }
+    }
 
     // these help give the questions and radios numbers
     let i = 1;
@@ -27,6 +21,7 @@ export default function QuestionDiv(props) {
     let k = 1;
     let l = 1;
     let m = 1;
+    let n = 1;
 
   return (
     <div className="container">
@@ -34,6 +29,7 @@ export default function QuestionDiv(props) {
         <div key={result.question} name={result.question} onChange={props.handleRadioChange}>
           <p>Category: {result.category}</p>
       <p>{i++}. {result.question}</p>
+        <p>{displayAnswers(n++)}</p>
           <form>
             <div className="control my-3">
               <input

@@ -33,6 +33,7 @@ export default function QuestionFilter() {
     question14: '',
     question15: '',
     score: 0,
+    showAnswers: false
   });
 
   // when the component loads, get all possible trivia categories to use in the select dropdown
@@ -146,51 +147,39 @@ export default function QuestionFilter() {
   };
 
   const checkAnswers = () => {
-    const {
-      correctAnswers,
-      question1,
-      question2,
-      question3,
-      question4,
-      question5,
-      question6,
-      question7,
-      question8,
-      question9,
-      question10,
-      question11,
-      question12,
-      question13,
-      question14,
-      question15,
-    } = state;
-    //   check which answers are correct/incorrect
     const userAnswerArray = [
-      question1,
-      question2,
-      question3,
-      question4,
-      question5,
-      question6,
-      question7,
-      question8,
-      question9,
-      question10,
-      question11,
-      question12,
-      question13,
-      question14,
-      question15,
+      state.question1,
+      state.question2,
+      state.question3,
+      state.question4,
+      state.question5,
+      state.question6,
+      state.question7,
+      state.question8,
+      state.question9,
+      state.question10,
+      state.question11,
+      state.question12,
+      state.question13,
+      state.question14,
+      state.question15,
     ];
+    //   check which answers are correct/incorrect
     let rawScore = 0;
     let i = 0;
     userAnswerArray.forEach((userAnswer) => {
-      if (userAnswer === correctAnswers[i]) {
+      if (userAnswer === state.correctAnswers[i]) {
         rawScore++;
       }
+      console.log(userAnswer, state.correctAnswers[i])
       i++;
     });
     console.log(rawScore, 'this is the rawscore');
+    // set the state.showAnswers to be true, so then the answers will be displayed.
+    setState({
+        ...state,
+        showAnswers: true
+    });
   };
 
   return (
@@ -236,6 +225,8 @@ export default function QuestionFilter() {
         apiResults={state.apiResults}
         handleRadioChange={handleRadioChange}
         handleQuizSubmit={handleQuizSubmit}
+        showAnswers={state.showAnswers}
+        correctAnswers={state.correctAnswers}
       />
     </div>
   );
