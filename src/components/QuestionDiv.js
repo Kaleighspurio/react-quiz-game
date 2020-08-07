@@ -1,4 +1,5 @@
 import React from 'react';
+import './QuestionDiv.css';
 
 export default function QuestionDiv(props) {
   // if there are questions, display the end of game button
@@ -7,7 +8,8 @@ export default function QuestionDiv(props) {
       return (
         <button
           type="submit"
-          className="button"
+          id="done-button"
+          className="button mb-6 mt-3"
           onClick={props.handleQuizSubmit}
         >
           Done!
@@ -23,8 +25,8 @@ export default function QuestionDiv(props) {
           className="has-text-weight-bold"
           style={
             props.correctAnswers[n - 1] === props.userAnswers[n - 1]
-              ? { color: 'green' }
-              : { color: 'red' }
+              ? { color: '#0c7c59' }
+              : { color: '#800000' }
           }
         >
           Correct Answer: {props.correctAnswers[n - 1]}
@@ -45,17 +47,18 @@ export default function QuestionDiv(props) {
     <div className="container">
       {props.apiResults.map((result) => (
         <div
+        className="my-4 question-div"
           key={result.question}
           name={result.question}
           onChange={props.handleRadioChange}
         >
-          <p>Category: {result.category}</p>
-          <p>
+          <p className="my-2 left" >Category: {result.category}</p>
+          <p className="left question" >
             {i++}. {result.question}
           </p>
           <p>{displayAnswers(n++)}</p>
-          <form>
-            <div className="control my-3">
+          <form className='form'>
+            <div className="control my-3 radio-div">
               <input
                 className="mx-1"
                 type="radio"
@@ -95,10 +98,3 @@ export default function QuestionDiv(props) {
     </div>
   );
 }
-
-//  TODO: Next steps-
-
-// * add code to make sure all questions have been answered
-// * add function that will check answers
-// * Deal with calculating the score and displaying it
-// * Change the score to a modal?

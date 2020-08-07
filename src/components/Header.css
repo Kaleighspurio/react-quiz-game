@@ -1,0 +1,14 @@
+.hero {
+    background: #462255;
+    border-radius: 15px;
+    border-bottom: 2px solid #f4faff;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#white {
+    color: #f4faff;
+}
+
+#yellow {
+    color: #f9c846;
+}

@@ -1,0 +1,34 @@
+.form {
+    width: 45%;
+    margin: auto;
+}
+
+.radio-div {
+    text-align: left !important;
+}
+
+.left {
+    text-align: left !important;
+}
+
+.question-div {
+    width: 60%;
+    margin: auto;
+}
+
+.question {
+    font-size: 20px;
+}
+
+#done-button {
+    background: #462255;
+    font-weight: bold;
+    border-radius: 10px;
+    color: #f4faff;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    width: 50%;
+}
+
+#done-button:hover {
+    border: 2px solid #f4faff;
+}

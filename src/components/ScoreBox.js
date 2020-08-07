@@ -1,4 +1,5 @@
 import React from 'react';
+import './ScoreBox.css';
 
 export default function ScoreBox(props) {
 
@@ -11,8 +12,8 @@ export default function ScoreBox(props) {
     }
     return (
         <div className='tile is-child is-success'>
-            <p className='title is-4'>Your Score: {displayScore()}</p>
-            <button className='button' onClick={props.handlePlayAgain}>Play Again?</button>
+            <p className='title is-4 my-4'>Your Score: {displayScore()}</p>
+            <button id="playagain" className='button' onClick={props.handlePlayAgain}>Play Again?</button>
         </div>
     )
 }
