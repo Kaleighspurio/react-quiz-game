@@ -11,7 +11,7 @@ export default function QuestionDiv(props) {
 
     const displayAnswers = (n) => {
         if (props.showAnswers) {
-        return <span className="has-text-weight-bold has-text-link" >Correct Answer: {props.correctAnswers[n-1]}</span>
+        return <span className="has-text-weight-bold" style={props.correctAnswers[n-1]===props.userAnswers[n-1] ? {color: 'green'} : {color: 'red'}} >Correct Answer: {props.correctAnswers[n-1]}</span>
         }
     }
 

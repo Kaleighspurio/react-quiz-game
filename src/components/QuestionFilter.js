@@ -10,8 +10,9 @@ export default function QuestionFilter() {
   // * categoryId: Where the selected category is stored, if the user wants trivia of a certain category
   //  * allCategories: all category options possible, used in the select dropdown
   //  * correctAnswers: all of the correct answers to the current questions
-  //  * 1-15: stores all of the answers that the user selected
+  //  * question1-15: stores all of the answers that the user selected
   //  * score: stores the user's score after the quiz
+  //  * showAnswers: gets changed after the quiz is submitted and when changed to true, will display the correct answer for each quesiton.
   const [state, setState] = useState({
     apiResults: [],
     categoryId: '9',
@@ -32,8 +33,9 @@ export default function QuestionFilter() {
     question13: '',
     question14: '',
     question15: '',
+    userAnswers: [],
     score: 0,
-    showAnswers: false
+    showAnswers: false,
   });
 
   // when the component loads, get all possible trivia categories to use in the select dropdown
@@ -139,7 +141,7 @@ export default function QuestionFilter() {
       !state.question14 ||
       !state.question15
     ) {
-      return alert('oops you forgot one');
+      return alert('oops you forgot at least one question');
     } else {
       // if all questions answers, call the check answers function
       checkAnswers();
@@ -171,16 +173,23 @@ export default function QuestionFilter() {
       if (userAnswer === state.correctAnswers[i]) {
         rawScore++;
       }
-      console.log(userAnswer, state.correctAnswers[i])
+      console.log(userAnswer, state.correctAnswers[i]);
       i++;
     });
     console.log(rawScore, 'this is the rawscore');
     // set the state.showAnswers to be true, so then the answers will be displayed.
     setState({
-        ...state,
-        showAnswers: true
+      ...state,
+      userAnswers: userAnswerArray,
+      showAnswers: true,
     });
+    calculateScore(rawScore);
   };
+
+  const calculateScore = (score) => {
+      const percentCorrect = Math.round(score / 15 * 100);
+      console.log(percentCorrect);
+  }
 
   return (
     <div className="container">
@@ -227,6 +236,7 @@ export default function QuestionFilter() {
         handleQuizSubmit={handleQuizSubmit}
         showAnswers={state.showAnswers}
         correctAnswers={state.correctAnswers}
+        userAnswers={state.userAnswers}
       />
     </div>
   );
