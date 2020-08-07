@@ -186,12 +186,11 @@ export default function Main() {
       console.log(userAnswer, state.correctAnswers[i]);
       i++;
     });
-
     console.log(rawScore, 'this is the rawscore');
-
     calculateScore(rawScore, userAnswerArray);
   };
 
+  // calculate the score to a percentage
   const calculateScore = (score, userAnswerArray) => {
     const percentCorrect = Math.round((score / 15) * 100);
     console.log(percentCorrect);
@@ -209,6 +208,7 @@ export default function Main() {
     window.location.reload(false);
   }
 
+  // handles conditional rendering for the filterform and quiz questiondiv
   const displayFilter = () => {
     if (state.filterDisplay === true) {
       return (
@@ -234,6 +234,7 @@ export default function Main() {
     }
   };
 
+  // handles conditional rendering of the scorebox
   const displayScore = () => {
     if (state.displayScore === true ) {
       return <ScoreBox score={state.score} handlePlayAgain={handlePlayAgain} />
