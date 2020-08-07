@@ -11,6 +11,7 @@ export default function QuestionFilter() {
   //  * allCategories: all category options possible, used in the select dropdown
   //  * correctAnswers: all of the correct answers to the current questions
   //  * question1-15: stores all of the answers that the user selected
+  //  * userAnswers: is used to display the correct answers after scoring
   //  * score: stores the user's score after the quiz
   //  * showAnswers: gets changed after the quiz is submitted and when changed to true, will display the correct answer for each quesiton.
   const [state, setState] = useState({
@@ -76,6 +77,7 @@ export default function QuestionFilter() {
     API.getQuestionsAnyCategory().then((response) => {
       decodeResults(response.data.results);
     });
+
   };
 
   //   When the select box is changed, set the state.categoryId to the id of the selected category
@@ -145,10 +147,10 @@ export default function QuestionFilter() {
     } else {
       // if all questions answers, call the check answers function
       checkAnswers();
-    //   And scroll back to the top of the page
+      //   And scroll back to the top of the page
       window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
+        top: 0,
+        behavior: 'smooth',
       });
     }
   };
@@ -181,24 +183,23 @@ export default function QuestionFilter() {
       console.log(userAnswer, state.correctAnswers[i]);
       i++;
     });
+
     console.log(rawScore, 'this is the rawscore');
+
+    calculateScore(rawScore, userAnswerArray);
+  };
+
+  const calculateScore = (score, userAnswerArray) => {
+    const percentCorrect = Math.round((score / 15) * 100);
+    console.log(percentCorrect);
     // set the state.showAnswers to be true, so then the answers will be displayed.
     setState({
       ...state,
-      userAnswers: userAnswerArray,
+      score: percentCorrect,
       showAnswers: true,
+      userAnswers: userAnswerArray,
     });
-    calculateScore(rawScore);
   };
-
-  const calculateScore = (score) => {
-      const percentCorrect = Math.round(score / 15 * 100);
-      console.log(percentCorrect);
-      setState({
-          ...state,
-          score: percentCorrect
-      });
-  }
 
   return (
     <div className="container">

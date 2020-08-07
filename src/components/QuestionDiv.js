@@ -1,41 +1,65 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function QuestionDiv(props) {
-
-    // if there are questions, display the end of game button
-    const displayButton = () => {
-        if (props.apiResults.length > 1) {
-           return <button type='submit' className="button" onClick={props.handleQuizSubmit} >Done!</button>
-        }
+  // if there are questions, display the end of game button
+  const displayButton = () => {
+    if (props.apiResults.length > 1) {
+      return (
+        <button
+          type="submit"
+          className="button"
+          onClick={props.handleQuizSubmit}
+        >
+          Done!
+        </button>
+      );
     }
+  };
 
-    const displayAnswers = (n) => {
-        if (props.showAnswers) {
-        return <span className="has-text-weight-bold" style={props.correctAnswers[n-1]===props.userAnswers[n-1] ? {color: 'green'} : {color: 'red'}} >Correct Answer: {props.correctAnswers[n-1]}</span>
-        }
+  const displayAnswers = (n) => {
+    if (props.showAnswers) {
+      return (
+        <span
+          className="has-text-weight-bold"
+          style={
+            props.correctAnswers[n - 1] === props.userAnswers[n - 1]
+              ? { color: 'green' }
+              : { color: 'red' }
+          }
+        >
+          Correct Answer: {props.correctAnswers[n - 1]}
+        </span>
+      );
     }
+  };
 
-    // these help give the questions and radios numbers
-    let i = 1;
-    let j = 1;
-    let k = 1;
-    let l = 1;
-    let m = 1;
-    let n = 1;
+  // these help give the questions and radios numbers
+  let i = 1;
+  let j = 1;
+  let k = 1;
+  let l = 1;
+  let m = 1;
+  let n = 1;
 
   return (
     <div className="container">
       {props.apiResults.map((result) => (
-        <div key={result.question} name={result.question} onChange={props.handleRadioChange}>
+        <div
+          key={result.question}
+          name={result.question}
+          onChange={props.handleRadioChange}
+        >
           <p>Category: {result.category}</p>
-      <p>{i++}. {result.question}</p>
-        <p>{displayAnswers(n++)}</p>
+          <p>
+            {i++}. {result.question}
+          </p>
+          <p>{displayAnswers(n++)}</p>
           <form>
             <div className="control my-3">
               <input
                 className="mx-1"
                 type="radio"
-                name={'question' + (j++)}
+                name={'question' + j++}
                 value={result.all_answers[0]}
               />
               {result.all_answers[0]}
@@ -43,7 +67,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name={'question' + (k++)}
+                name={'question' + k++}
                 value={result.all_answers[1]}
               />
               {result.all_answers[1]}
@@ -51,7 +75,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name={'question' + (l++)}
+                name={'question' + l++}
                 value={result.all_answers[2]}
               />
               {result.all_answers[2]}
@@ -59,7 +83,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name={'question' + (m++)}
+                name={'question' + m++}
                 value={result.all_answers[3]}
               />
               {result.all_answers[3]}
@@ -72,7 +96,7 @@ export default function QuestionDiv(props) {
   );
 }
 
-//  TODO: Next steps- 
+//  TODO: Next steps-
 
 // * add code to make sure all questions have been answered
 // * add function that will check answers
