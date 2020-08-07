@@ -3,8 +3,9 @@ import ScoreBox from './ScoreBox';
 import API from '../utils/API';
 import QuestionDiv from './QuestionDiv';
 import { Base64 } from 'js-base64';
+import FilterForm from './FilterForm';
 
-export default function QuestionFilter() {
+export default function Main() {
   // Lets have some state...
   //   * apiResults: Where the decoded results (trivia questions and answers) are stored
   // * categoryId: Where the selected category is stored, if the user wants trivia of a certain category
@@ -37,6 +38,8 @@ export default function QuestionFilter() {
     userAnswers: [],
     score: 0,
     showAnswers: false,
+    filterDisplay: true,
+    displayScore: false
   });
 
   // when the component loads, get all possible trivia categories to use in the select dropdown
@@ -77,7 +80,6 @@ export default function QuestionFilter() {
     API.getQuestionsAnyCategory().then((response) => {
       decodeResults(response.data.results);
     });
-
   };
 
   //   When the select box is changed, set the state.categoryId to the id of the selected category
@@ -107,6 +109,7 @@ export default function QuestionFilter() {
       ...state,
       apiResults: results,
       correctAnswers: correctAnswers,
+      filterDisplay: false,
     });
   };
 
@@ -198,49 +201,28 @@ export default function QuestionFilter() {
       score: percentCorrect,
       showAnswers: true,
       userAnswers: userAnswerArray,
+      displayScore: true
     });
   };
 
-  return (
-    <div className="container">
-      <ScoreBox score={state.score} />
-      <form className="my-6">
-        <div className="is-grouped">
-          <p className="control">
-            <button
-              className="button is-warning"
-              type="submit"
-              onClick={handleAllSubmit}
-            >
-              I Want All Categories!
-            </button>
-          </p>
-          <h2 className="my-4 control">OR...</h2>
-          <div className="field is-grouped">
-            <div className="control is-expanded">
-              <div className="select is-fullwidth">
-                <select onChange={handleChange}>
-                  {state.allCategories.map((category) => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <p className="control">
-              <button
-                className="button is-info"
-                type="submit"
-                onClick={handleCategorySubmit}
-              >
-                Search
-              </button>
-            </p>
-          </div>
-        </div>
-      </form>
-      <QuestionDiv
+  const handlePlayAgain = () => {
+    window.location.reload(false);
+  }
+
+  const displayFilter = () => {
+    if (state.filterDisplay === true) {
+      return (
+        <FilterForm
+        handleAllSubmit={handleAllSubmit}
+        handleChange={handleChange}
+        allCategories={state.allCategories}
+        handleCategorySubmit={handleCategorySubmit}
+        filterDisplay={state.filterDisplay}
+      />
+      )
+    } else {
+      return (
+        <QuestionDiv
         apiResults={state.apiResults}
         handleRadioChange={handleRadioChange}
         handleQuizSubmit={handleQuizSubmit}
@@ -248,6 +230,20 @@ export default function QuestionFilter() {
         correctAnswers={state.correctAnswers}
         userAnswers={state.userAnswers}
       />
+      )
+    }
+  };
+
+  const displayScore = () => {
+    if (state.displayScore === true ) {
+      return <ScoreBox score={state.score} handlePlayAgain={handlePlayAgain} />
+    }
+  }
+
+  return (
+    <div className="container">
+      {displayScore()}
+      {displayFilter()}
     </div>
   );
 }

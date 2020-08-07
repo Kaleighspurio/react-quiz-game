@@ -12,6 +12,7 @@ export default function ScoreBox(props) {
     return (
         <div className='tile is-child is-success'>
             <p className='title is-4'>Your Score: {displayScore()}</p>
+            <button className='button' onClick={props.handlePlayAgain}>Play Again?</button>
         </div>
     )
 }

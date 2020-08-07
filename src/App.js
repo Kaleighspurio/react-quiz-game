@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './components/Header';
-import QuestionFilter from './components/QuestionFilter';
+import Main from './components/Main';
 import './App.css';
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <div className="container">
         <Header />
-        <QuestionFilter />
+        <Main />
       </div>
     </div>
   );
