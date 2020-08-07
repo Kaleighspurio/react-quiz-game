@@ -145,6 +145,11 @@ export default function QuestionFilter() {
     } else {
       // if all questions answers, call the check answers function
       checkAnswers();
+    //   And scroll back to the top of the page
+      window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+      });
     }
   };
 
@@ -189,11 +194,15 @@ export default function QuestionFilter() {
   const calculateScore = (score) => {
       const percentCorrect = Math.round(score / 15 * 100);
       console.log(percentCorrect);
+      setState({
+          ...state,
+          score: percentCorrect
+      });
   }
 
   return (
     <div className="container">
-      <ScoreBox />
+      <ScoreBox score={state.score} />
       <form className="my-6">
         <div className="is-grouped">
           <p className="control">
