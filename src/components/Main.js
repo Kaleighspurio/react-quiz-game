@@ -104,7 +104,6 @@ export default function Main() {
     results.forEach((result) => {
       correctAnswers.push(result.correct_answer);
     });
-    console.log(correctAnswers, 'correct answers');
     setState({
       ...state,
       apiResults: results,
@@ -183,7 +182,6 @@ export default function Main() {
       if (userAnswer === state.correctAnswers[i]) {
         rawScore++;
       }
-      console.log(userAnswer, state.correctAnswers[i]);
       i++;
     });
     console.log(rawScore, 'this is the rawscore');
@@ -193,7 +191,6 @@ export default function Main() {
   // calculate the score to a percentage
   const calculateScore = (score, userAnswerArray) => {
     const percentCorrect = Math.round((score / 15) * 100);
-    console.log(percentCorrect);
     // set the state.showAnswers to be true, so then the answers will be displayed.
     setState({
       ...state,
