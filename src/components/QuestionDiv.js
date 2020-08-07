@@ -12,13 +12,14 @@ export default function QuestionDiv(props) {
     // if there are questions, display the end of game button
     const displayButton = () => {
         if (props.apiResults.length > 1) {
-           return <button type='submit' className="button" onClick={handleQuizSubmit} >Done!</button>
+           return <button type='submit' className="button" onClick={props.handleQuizSubmit} >Done!</button>
         }
     }
 
-    const handleQuizSubmit = (event) => {
-        event.preventDefault();
-    }
+    // const handleQuizSubmit = (event) => {
+    //     event.preventDefault();
+
+    // }
 
     // these help give the questions and radios numbers
     let i = 1;

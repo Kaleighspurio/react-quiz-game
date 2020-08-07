@@ -32,7 +32,7 @@ export default function QuestionFilter() {
     question13: '',
     question14: '',
     question15: '',
-    score: '',
+    score: 0,
   });
 
   // when the component loads, get all possible trivia categories to use in the select dropdown
@@ -92,45 +92,106 @@ export default function QuestionFilter() {
     });
   };
 
-  const grabCorrectAnswers = async (results) => {
+  const grabCorrectAnswers = (results) => {
     const correctAnswers = [];
-    await results.forEach((result) => {
+    results.forEach((result) => {
       correctAnswers.push(result.correct_answer);
     });
-    await console.log(correctAnswers, 'correct answers');
-     setState({
+    console.log(correctAnswers, 'correct answers');
+    setState({
       ...state,
       apiResults: results,
       correctAnswers: correctAnswers,
     });
-    await console.log(state.correctAnswers, correctAnswers, 'correct answers');
   };
 
-//   when the radio buttons are changed, the state is set according to which question
+  //   when the radio buttons are changed, the state is set according to which question
   const handleRadioChange = (event) => {
-    event.preventDefault();
-    console.log('radio clicked');
     const { name, value } = event.target;
     setState({
-        ...state,
-        [name]: value
+      ...state,
+      [name]: value,
     });
-  }
+  };
 
   const handleQuizSubmit = (event) => {
-      event.preventDefault();
-// we need to compare the correct answers with the answers the user chose...
-    let number = 1;
-    // state.correctAnswers.forEach(answer => {
-    //     if (answer === state.1) {
-    //         console.log(`${answer} is correct!`);
-    //     } else {
-    //         console.log('nope, wrong')
-    //     }
-    //     number++;
-    //     console.log(state.[number]);
-    // })
-  }
+    event.preventDefault();
+    allAnswered();
+  };
+
+  const allAnswered = () => {
+    //   check that all questions have been answered
+    if (
+      !state.question1 ||
+      !state.question2 ||
+      !state.question3 ||
+      !state.question4 ||
+      !state.question5 ||
+      !state.question6 ||
+      !state.question7 ||
+      !state.question8 ||
+      !state.question9 ||
+      !state.question10 ||
+      !state.question11 ||
+      !state.question12 ||
+      !state.question13 ||
+      !state.question14 ||
+      !state.question15
+    ) {
+      return alert('oops you forgot one');
+    } else {
+      // if all questions answers, call the check answers function
+      checkAnswers();
+    }
+  };
+
+  const checkAnswers = () => {
+    const {
+      correctAnswers,
+      question1,
+      question2,
+      question3,
+      question4,
+      question5,
+      question6,
+      question7,
+      question8,
+      question9,
+      question10,
+      question11,
+      question12,
+      question13,
+      question14,
+      question15,
+    } = state;
+    //   check which answers are correct/incorrect
+    const userAnswerArray = [
+      question1,
+      question2,
+      question3,
+      question4,
+      question5,
+      question6,
+      question7,
+      question8,
+      question9,
+      question10,
+      question11,
+      question12,
+      question13,
+      question14,
+      question15,
+    ];
+    let rawScore = 0;
+    let i = 0;
+    userAnswerArray.forEach((userAnswer) => {
+      if (userAnswer === correctAnswers[i]) {
+        rawScore++;
+      }
+      i++;
+    });
+    console.log(rawScore, 'this is the rawscore');
+  };
 
   return (
     <div className="container">
@@ -171,7 +232,11 @@ export default function QuestionFilter() {
           </div>
         </div>
       </form>
-      <QuestionDiv apiResults={state.apiResults} handleRadioChange={handleRadioChange} handleQuizSubmit={handleQuizSubmit} />
+      <QuestionDiv
+        apiResults={state.apiResults}
+        handleRadioChange={handleRadioChange}
+        handleQuizSubmit={handleQuizSubmit}
+      />
     </div>
   );
 }
