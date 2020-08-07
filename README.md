@@ -24,7 +24,7 @@ Clone down the repo and run `npm install` to install the necessary dependencies.
 
 ## Demo
 
-
+Try out the Trivia Quiz!: [https://kaleighspurio.github.io/react-quiz-game/](https://kaleighspurio.github.io/react-quiz-game/)
 
 ### Screenshots
 
