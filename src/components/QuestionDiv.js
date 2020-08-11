@@ -36,12 +36,7 @@ export default function QuestionDiv(props) {
   };
 
   // these help give the questions and radios numbers
-  let i = 1;
-  let j = 1;
-  let k = 1;
-  let l = 1;
-  let m = 1;
-  let n = 1;
+  let i = 0;
 
   return (
     <div className="container">
@@ -56,13 +51,13 @@ export default function QuestionDiv(props) {
           <p className="left question" >
             {i++}. {result.question}
           </p>
-          <p>{displayAnswers(n++)}</p>
+          <p>{displayAnswers(i)}</p>
           <form className='form'>
             <div className="control my-3 radio-div">
               <input
                 className="mx-1"
                 type="radio"
-                name={'question' + j++}
+                name={'question' + i}
                 value={result.all_answers[0]}
               />
               {result.all_answers[0]}
@@ -70,7 +65,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name={'question' + k++}
+                name={'question' + i}
                 value={result.all_answers[1]}
               />
               {result.all_answers[1]}
@@ -78,7 +73,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name={'question' + l++}
+                name={'question' + i}
                 value={result.all_answers[2]}
               />
               {result.all_answers[2]}
@@ -86,7 +81,7 @@ export default function QuestionDiv(props) {
               <input
                 className="mx-1"
                 type="radio"
-                name={'question' + m++}
+                name={'question' + i}
                 value={result.all_answers[3]}
               />
               {result.all_answers[3]}
